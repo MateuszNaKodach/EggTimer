@@ -76,6 +76,7 @@ public class EggTimerActivity extends AppCompatActivity implements EggTimerView 
             public void onTick(long l) {
                 presenter.setTimerCurrentTime((int) l/1000);
                 presenter.updateTimerStateTextView();
+                timerSlider.setProgress(presenter.getTimerCurrentTimeInSeconds());
                 Log.i("TimeState:",String.valueOf(l));
             }
 
