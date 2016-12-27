@@ -7,4 +7,6 @@ package pl.nowakprojects.util;
 public class Const {
     public static final int MAX_EGGTIMER_SECONDS = 600;
     public static final int INITALIZE_EGGTIMER_SECONDS = 30;
+    public static final int ONE_SECOND_IN_MILIS = 1000;
+    public static final int STANDARD_TIMER_DELAY = 0;
 }

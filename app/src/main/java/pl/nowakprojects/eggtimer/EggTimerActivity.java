@@ -1,7 +1,10 @@
 package pl.nowakprojects.eggtimer;
 
+import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +19,7 @@ public class EggTimerActivity extends AppCompatActivity implements EggTimerView 
     private SeekBar timerSlider;
     private TextView timerTextView;
     private FloatingActionButton timerControlButton;
+    private CountDownTimer countDownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,28 +55,50 @@ public class EggTimerActivity extends AppCompatActivity implements EggTimerView 
 
     @Override
     public void setTimerControlButton() {
-        timerControlButton.setOnClickListener(new View.OnClickListener() {
+            timerControlButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                timerControlButton.setEnabled(false);
-                new CountDownTimer(presenter.getTimerCurrentTimeInSeconds() * 1000,1000){
-
-                    @Override
-                    public void onTick(long l) {
-                        presenter.setTimerCurrentTime((int) l/1000);
-                        presenter.updateTimerStateTextView();
-                        Log.i("TimeState:",String.valueOf(l));
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        onTick(1000);
-                        presenter.updateTimerStateTextView();
-                        timerControlButton.setEnabled(true);
-                    }
-                }.start();
+                if(!presenter.isActiveTimer())
+                    presenter.startTimer();
+                else
+                    presenter.stopTimer();
             }
         });
+    }
+
+    @Override
+    public void startTimer() {
+        timerSlider.setEnabled(false);
+        timerControlButton.setImageResource(android.R.drawable.ic_media_pause);
+        countDownTimer = new CountDownTimer(presenter.getTimerCurrentTimeInSeconds() * 1000 + 100,1000){
+
+            @Override
+            public void onTick(long l) {
+                presenter.setTimerCurrentTime((int) l/1000);
+                presenter.updateTimerStateTextView();
+                Log.i("TimeState:",String.valueOf(l));
+            }
+
+            @Override
+            public void onFinish() {
+                presenter.setTimerCurrentTime(0);
+                presenter.updateTimerStateTextView();
+                presenter.playTimerAlarm();
+                timerControlButton.setEnabled(true);
+                timerSlider.setEnabled(true);
+            }
+        }.start();
+    }
+
+    @Override
+    public void stopTimer() {
+        timerControlButton.setImageResource(android.R.drawable.ic_media_play);
+        timerSlider.setEnabled(true);
+        countDownTimer.cancel();
+    }
+
+    public void playTimerAlarm(){
+        MediaPlayer.create(this,R.raw.timer_alarm_1).start();
     }
 
 
@@ -99,4 +125,5 @@ public class EggTimerActivity extends AppCompatActivity implements EggTimerView 
             }
         });
     }
+
 }

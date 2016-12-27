@@ -10,4 +10,7 @@ interface EggTimerView extends MvpView {
     void setupTimerSlider();
     void setTimerStateTextView(int minutes, int seconds);
     void setTimerControlButton();
+    void playTimerAlarm();
+    void startTimer();
+    void stopTimer();
 }

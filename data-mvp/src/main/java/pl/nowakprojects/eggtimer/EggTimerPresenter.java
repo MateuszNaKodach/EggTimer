@@ -52,6 +52,23 @@ class EggTimerPresenter implements MvpPresenter<EggTimerView> {
         view.setTimerStateTextView(eggTimer.getCurrentMinutes(),eggTimer.getCurrentSeconds());
     }
 
+    void playTimerAlarm(){
+        view.playTimerAlarm();
+    }
+
+    void startTimer(){
+        eggTimer.setActiveTimer(true);
+        view.startTimer();
+    }
+
+    void stopTimer(){
+        eggTimer.setActiveTimer(false);
+        view.stopTimer();
+    }
+
+    boolean isActiveTimer(){
+        return eggTimer.isActiveTimer();
+    }
 
     @Override
     public void attachView(EggTimerView view) {
@@ -62,5 +79,6 @@ class EggTimerPresenter implements MvpPresenter<EggTimerView> {
     public void detachView() {
         view=null;
     }
+
 
 }
