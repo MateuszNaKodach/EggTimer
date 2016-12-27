@@ -81,10 +81,10 @@ public class EggTimerActivity extends AppCompatActivity implements EggTimerView 
 
             @Override
             public void onFinish() {
+                timerControlButton.setImageResource(android.R.drawable.ic_media_play);
                 presenter.setTimerCurrentTime(0);
                 presenter.updateTimerStateTextView();
                 presenter.playTimerAlarm();
-                timerControlButton.setEnabled(true);
                 timerSlider.setEnabled(true);
             }
         }.start();
@@ -94,6 +94,7 @@ public class EggTimerActivity extends AppCompatActivity implements EggTimerView 
     public void stopTimer() {
         timerControlButton.setImageResource(android.R.drawable.ic_media_play);
         timerSlider.setEnabled(true);
+        timerSlider.setProgress(presenter.getTimerCurrentTimeInSeconds());
         countDownTimer.cancel();
     }
 
